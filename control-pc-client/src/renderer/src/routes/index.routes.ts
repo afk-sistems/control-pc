@@ -1,27 +1,21 @@
 import { ComponentHandler } from '../strategy/component-handler';
+import {DeviceComponent} from '../controllers/device';
+import {RegisterComponent} from '../controllers/register';
 
-
+import page from "page";
 
 const componentHandler = new ComponentHandler();
 
-export default async (router:string) => {
+page('/', () => {
+    componentHandler.setComponent(new DeviceComponent());
+})
 
-        const routeWithoutHash = router.replace('#/', "");              
+page('/register', () => {
+    componentHandler.setComponent(new RegisterComponent());
+})
 
-        switch(routeWithoutHash){
+page('/device', () => {
+    componentHandler.setComponent(new DeviceComponent());
+})
 
-            case 'register': 
-                import('../controllers/register').then(m=>{
-                    const Component =  m.RegisterComponent;
-                    componentHandler.setComponent(new Component());
-                });
-                break;
-            case 'device':                
-                import('../controllers/device').then(m=>{
-                    const Component =  m.DeviceComponent;
-                    componentHandler.setComponent(new Component());
-                });
-                break;
-        }
-
-}
+page();
