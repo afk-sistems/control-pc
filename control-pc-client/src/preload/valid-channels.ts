@@ -1,7 +1,7 @@
 export default {
     send: ["socket:request"],
     receive: ["socket:response"],
-    invoke: ["device:info"]
+    invoke: ["device:info", "user:register", "user:login"]
 } as ApiChannels
 
 interface ApiChannels {

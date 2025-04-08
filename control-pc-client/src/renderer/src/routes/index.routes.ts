@@ -6,11 +6,11 @@ import page from "page";
 
 const componentHandler = new ComponentHandler();
 
-page('/', () => {
-    componentHandler.setComponent(new DeviceComponent());
-})
+// page('/', () => {
+//     componentHandler.setComponent(new DeviceComponent());
+// })
 
-page('/register', () => {
+page('/', () => {
     componentHandler.setComponent(new RegisterComponent());
 })
 

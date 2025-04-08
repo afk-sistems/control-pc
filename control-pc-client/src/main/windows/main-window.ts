@@ -36,7 +36,7 @@ export default class MainWindow {
           webPreferences: {
             preload: join(__dirname, '../preload/index.js'),
             sandbox: false
-          }
+          },
         })
       
         MainWindow.window.on('ready-to-show', () => {

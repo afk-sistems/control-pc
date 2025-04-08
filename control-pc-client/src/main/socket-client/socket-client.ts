@@ -1,5 +1,9 @@
 import io, { Socket } from 'socket.io-client';
 import MainWindow from '../windows/main-window';
+import { Notification } from 'electron';
+import { cancelShutdown, shutdownDevice } from '../services/device-service';
+
+
 
 export class SocketClient {
 
@@ -20,7 +24,9 @@ export class SocketClient {
 
             this.sendStatusMessage("DISCONNECTED", "Error de conexión: " + err.message);
 
-        })
+        });
+
+        this.loadEvents(this.socket);
 
     }
 
@@ -29,6 +35,28 @@ export class SocketClient {
             status: status,
             message: message
         })
+    }
+
+    loadEvents(socket:Socket){
+
+        socket.on('shutdown:requested', (time:string)=>{
+
+            shutdownDevice(parseInt(time));
+
+            new Notification({
+                title: 'Apagado Solicitado',
+                body: 'Para cancelar haga click en la notificación',
+                urgency: 'critical',
+                subtitle: 'Tiempo restante: ' + time + ' segundos',
+
+            }).on('click', ()=>{
+
+                cancelShutdown();
+                
+            }).show();
+
+        })
+
     }
 
 

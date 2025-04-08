@@ -17,8 +17,12 @@ export class EventGateway implements OnGatewayConnection, OnGatewayDisconnect{
   private readonly io:Server;
 
   @SubscribeMessage('shutdown:request')
-  handleShutdown(@MessageBody() data:any) {
+  handleShutdown(@MessageBody() pcID:string) {
 
+    const clientId = this._socketDbService.get(pcID);
+    
+    this.io.to(clientId).emit('shutdown:requested', clientId);
+    
   }
 
   async handleConnection(client: any, ...args: any[]) {

@@ -28,32 +28,16 @@ export class RegisterComponent implements Component{
     configureForm(){
 
         //#region NODE ELEMENTS
-        const inputName = document.getElementById('input-name') as HTMLInputElement;
-        const inputUbication = document.getElementById('input-ubication') as HTMLInputElement;
         const inputUser = document.getElementById('input-user') as HTMLInputElement;
         const inputPassword = document.getElementById('input-password') as HTMLInputElement;
         const btnForm = document.getElementById('btn-form') as HTMLButtonElement;
         //#endregion
 
         //#region OBSERVABLES
-        const inputNameChange$ = fromEvent(inputName, 'input').pipe(map((event:Event) => (<HTMLInputElement> event.target).value), takeUntil(this.destroy$));                                                 
-        const inputUbicationChange$ = fromEvent(inputUbication, 'input').pipe(map((event:Event) => (<HTMLInputElement> event.target).value), takeUntil(this.destroy$));
         const inputUserChange$ = fromEvent(inputUser, 'input').pipe(map((event:Event) => (<HTMLInputElement> event.target).value), takeUntil(this.destroy$));
         const inputPasswordChange$ = fromEvent(inputPassword, 'input').pipe(map((event:Event) => (<HTMLInputElement> event.target).value), takeUntil(this.destroy$));
         const btnFormClick$ = fromEvent(btnForm, 'click');
         //#endregion
-
-        inputNameChange$.subscribe({
-            next: (value) => {
-                this.formValue.name = value;
-            }
-        });
-
-        inputUbicationChange$.subscribe({
-            next: (value) => {
-                this.formValue.ubication = value;
-            }
-        });
 
         inputUserChange$.subscribe({
             next: (value) => {
@@ -68,10 +52,11 @@ export class RegisterComponent implements Component{
         });
 
         btnFormClick$.subscribe({
-            next: (event) => {
-                event.preventDefault();    
-                window.location.hash = "#/device";        
-                window.location.href = "#/device";
+            next: async (event) => {
+
+                const response = await window.api.invoke('user:register', this.formValue);
+                
+                window.location.href = "/device";
             }
         })
     }

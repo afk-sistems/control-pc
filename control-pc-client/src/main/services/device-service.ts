@@ -1,4 +1,5 @@
 import os from 'os';
+import child_process from 'child_process';
 
 export const getDeviceInformation = () => {
     
@@ -21,4 +22,22 @@ export const getDeviceInformation = () => {
         username: process.env.USER || process.env.USERNAME
     }
 }
+
+export const shutdownDevice = (timeInMs:number) => {
+    child_process.exec(`shutdown -s -t ${timeInMs}`, (error, stdout, stderr) => {
+        if (error) {
+            throw new Error(error + "");
+        }
+    });
+}
+
+export const cancelShutdown = () => {
+    child_process.exec(`shutdown -a`, (error, stdout, stderr) => {
+        if (error) {
+            throw new Error(error + "");
+        }
+    });
+}
+
+
 
