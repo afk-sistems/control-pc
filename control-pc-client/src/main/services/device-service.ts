@@ -21,3 +21,4 @@ export const getDeviceInformation = () => {
         username: process.env.USER || process.env.USERNAME
     }
 }
+
