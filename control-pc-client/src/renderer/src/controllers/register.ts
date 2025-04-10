@@ -9,10 +9,8 @@ export class RegisterComponent implements Component{
     listeners: Subscription[] = [];
     destroy$ = new Subject<void>();
     formValue:IRegisterForm = {
-        name: '',
-        password: '',
-        ubication: '',
-        user: ''
+        email: '',
+        password: ''
     };
 
     getTemplate(): string {
@@ -28,20 +26,20 @@ export class RegisterComponent implements Component{
     configureForm(){
 
         //#region NODE ELEMENTS
-        const inputUser = document.getElementById('input-user') as HTMLInputElement;
+        const inputEmail = document.getElementById('input-email') as HTMLInputElement;
         const inputPassword = document.getElementById('input-password') as HTMLInputElement;
         const btnForm = document.getElementById('btn-form') as HTMLButtonElement;
         //#endregion
 
         //#region OBSERVABLES
-        const inputUserChange$ = fromEvent(inputUser, 'input').pipe(map((event:Event) => (<HTMLInputElement> event.target).value), takeUntil(this.destroy$));
+        const inputEmailChange$ = fromEvent(inputEmail, 'input').pipe(map((event:Event) => (<HTMLInputElement> event.target).value), takeUntil(this.destroy$));
         const inputPasswordChange$ = fromEvent(inputPassword, 'input').pipe(map((event:Event) => (<HTMLInputElement> event.target).value), takeUntil(this.destroy$));
         const btnFormClick$ = fromEvent(btnForm, 'click');
         //#endregion
 
-        inputUserChange$.subscribe({
+        inputEmailChange$.subscribe({
             next: (value) => {
-                this.formValue.user = value;
+                this.formValue.email = value;
             }
         });
 
@@ -54,9 +52,15 @@ export class RegisterComponent implements Component{
         btnFormClick$.subscribe({
             next: async (event) => {
 
+                event.preventDefault();
+
                 const response = await window.api.invoke('user:register', this.formValue);
-                
-                window.location.href = "/device";
+
+                if(response.error){
+                    alert('Ocurrio un error al contactar al servidor');
+                }else{
+                    window.location.href = "/device";
+                }
             }
         })
     }

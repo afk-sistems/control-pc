@@ -39,5 +39,9 @@ export const cancelShutdown = () => {
     });
 }
 
+export const getUniqueDeviceID = ():Promise<string> => {
+    return "";
+}
+
 
 
